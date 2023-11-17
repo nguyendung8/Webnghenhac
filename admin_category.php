@@ -10,21 +10,21 @@
       header('location:login.php');
    }
 
-   if(isset($_POST['add_category'])){//Thêm loại sách vào danh mục từ submit có name='add_category'
+   if(isset($_POST['add_category'])){//Thêm loại sách vào thể loại từ submit có name='add_category'
 
       $name = mysqli_real_escape_string($conn, $_POST['cate_name']);
 
       $select_category_name = mysqli_query($conn, "SELECT cate_name FROM `categories` WHERE cate_name = '$name'") or die('query failed');//truy vấn để kiểm tra loại sách đã tồn tại chưa
 
       if(mysqli_num_rows($select_category_name) > 0){// tồn tại rồi thì thông báo
-         $message[] = 'Danh mục đã tồn tại.';
+         $message[] = 'Thể loại nhạc đã tồn tại.';
       }else{//chưa tồn tại thì thêm mới
          $add_category_query = mysqli_query($conn, "INSERT INTO `categories`(cate_name) VALUES('$name')") or die('query failed');
 
          if($add_category_query){
-         $message[] = 'Thêm danh mục thành công!';
+         $message[] = 'Thêm thể loại  thành công!';
          }else{
-            $message[] = 'Không thể thêm danh mục này!';
+            $message[] = 'Không thể thêm thể loại  này!';
          }
       }
    }
@@ -34,14 +34,14 @@
       $delete_category_query = mysqli_query($conn, "DELETE FROM `categories` WHERE id = '$delete_id'") or die('query failed');
 
       if($delete_category_query){
-         $message[] = 'Xóa danh mục thành công!';
+         $message[] = 'Xóa thể loại  thành công!';
          }else{
-            $message[] = 'Không thể xóa danh mục này!';
+            $message[] = 'Không thể xóa thể loại  này!';
          }
       header('location:admin_category.php');
    }
 
-   if(isset($_POST['update_category'])){//Cập nhật loại sách vào danh mục từ submit có name='update_category'
+   if(isset($_POST['update_category'])){//Cập nhật loại sách vào thể loại từ submit có name='update_category'
 
       $update_p_id = $_POST['update_p_id'];
       $update_name = $_POST['update_name'];
@@ -60,7 +60,7 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Danh mục sách</title>
+   <title>Thể loại nhạc</title>
 
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
    <link rel="stylesheet" href="css/admin_style.css">
@@ -72,10 +72,10 @@
 
 <section class="add-products">
 
-   <h1 class="title">Danh mục sách</h1>
+   <h1 class="title">Thể loại nhạc</h1>
    <form action="" method="post" enctype="multipart/form-data">
-      <h3>Thêm danh mục sách</h3>
-      <input type="text" name="cate_name" class="box" placeholder="Nhập tên danh mục" required>
+      <h3>Thêm thể loại</h3>
+      <input type="text" name="cate_name" class="box" placeholder="Nhập tên thể loại" required>
       <input type="submit" value="Thêm" name="add_category" class="btn">
    </form>
 
@@ -93,12 +93,12 @@
       <div class="box">
          <div class="name"><?php echo $fetch_categorys['cate_name']; ?></div>
          <a href="admin_category.php?update=<?php echo $fetch_categorys['id']; ?>" class="option-btn">Cập nhật</a>
-         <a href="admin_category.php?delete=<?php echo $fetch_categorys['id']; ?>" class="delete-btn" onclick="return confirm('Xóa danh mục này?');">Xóa</a>
+         <a href="admin_category.php?delete=<?php echo $fetch_categorys['id']; ?>" class="delete-btn" onclick="return confirm('Xóa thể loại này?');">Xóa</a>
       </div>
       <?php
          }
       }else{
-         echo '<p class="empty">Không có thể loại truyện nào được thêm!</p>';  
+         echo '<p class="empty">Không có thể loại bài hát nào được thêm!</p>';  
       }
       ?>
    </div>

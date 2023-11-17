@@ -27,8 +27,6 @@
             $_SESSION['user_name'] = $row['name'];
             $_SESSION['user_email'] = $row['email'];
             $_SESSION['user_id'] = $row['id'];
-            // Cập nhật login
-            mysqli_query($conn, "UPDATE users SET is_logged_in = 1 WHERE id = $user_id") or die('query failed');
             header('location:home.php');
 
          }

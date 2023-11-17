@@ -18,9 +18,8 @@
       <a href="admin_page.php" class="logo">Quản lý</a>
 
       <nav class="navbar">
-         <a href="admin_products.php">Sách</a>
-         <a href="admin_category.php">Danh mục</a>
-         <a href="admin_borrows.php">Phiếu mượn</a>
+         <a href="admin_products.php">Bài hát</a>
+         <a href="admin_category.php">Thể loại</a>
          <a href="admin_users.php">Người dùng</a></a>
          <a href="admin_contacts.php">Tin nhắn</a>
       </nav>
