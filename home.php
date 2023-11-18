@@ -55,37 +55,45 @@
          height: 485px;
          border-radius: 9px;
       }
-
+      .banner {
+         min-height: 70vh;
+         background:linear-gradient(rgba(0,0,0,.2), rgba(0,0,0,.2)), url(./images/banner.jpg) no-repeat;
+         background-size: cover;
+         background-position: center;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+      }
    </style>
 </head>
 <body>
    
 <?php include 'header.php'; ?>
 
-<section class="home">
+<section class="home banner">
 
    <div class="content">
       <div class="slideshow-container">
          <div class="slide fade">
-            <img src="./images/slide1.jpg" alt="slide 1">
+            <img src="./images/slider1.jpg" alt="slide 1">
          </div>
          <div class="slide fade">
-            <img src="./images/slide2.jpg" alt="slide 2">
+            <img src="./images/slider2.jpg" alt="slide 2">
          </div>
          <div class="slide fade">
-            <img src="./images/slide3.jpg" alt="slide 3">
+            <img src="./images/slider3.jpg" alt="slide 3">
          </div>
          <div class="slide fade">
-            <img src="./images/slide4.jpg" alt="slide 3">
+            <img src="./images/slider4.jpg" alt="slide 3">
          </div>
          <div class="slide fade">
-            <img src="./images/slide5.jpg" alt="slide 3">
+            <img src="./images/slider5.jpg" alt="slide 3">
          </div>
          <div class="slide fade">
-            <img src="./images/slide6.jpg" alt="slide 3">
+            <img src="./images/slider6.jpg" alt="slide 3">
          </div>
          <div class="slide fade">
-            <img src="./images/slide7.jpg" alt="slide 3">
+            <img src="./images/slider7.jpg" alt="slide 3">
          </div>
       </div>
       <!-- <h3>Mỗi ngày một quyển sách.</h3>
@@ -97,7 +105,7 @@
 
 <section class="products">
 
-   <h1 class="title">Danh sách sách cho mượn</h1>
+   <h1 class="title">Danh sách bài hát</h1>
    <div class="list-cate">
       <?php  
          $select_categoriess = mysqli_query($conn, "SELECT * FROM `categories`") or die('query failed');
@@ -117,9 +125,9 @@
       if(isset($_GET['cate_id'])) {
          $cate_id = $_GET['cate_id'];
       } else {
-         $cate_id =1;
+         $cate_id = 6;
       }
-         $select_products = mysqli_query($conn, "SELECT b.* FROM books b JOIN categories c ON b.cate_id = c.id  WHERE cate_id = $cate_id AND b.quantity > 0") or die('query failed');
+         $select_products = mysqli_query($conn, "SELECT s.* FROM songs s JOIN categories c ON s.cate_id = c.id  WHERE cate_id = $cate_id") or die('query failed');
          if(mysqli_num_rows($select_products) > 0){
             while($fetch_products = mysqli_fetch_assoc($select_products)){
       ?>
@@ -127,14 +135,16 @@
             <img width="180px" height="207px" src="uploaded_img/<?php echo $fetch_products['image']; ?>" alt="">
             <div class="name"><?php echo $fetch_products['name']; ?></div>
             <div class="book-action">
-               <a href="book_detail.php?book_id=<?php echo $fetch_products['id'] ?>" class="view-book" >Xem thông tin sách</a>
-               <a href="book_borrow.php?book_id=<?php echo $fetch_products['id'] ?>" class="borrow-book" >Mượn sách</a>
+               <a href="song_detail.php?book_id=<?php echo $fetch_products['id'] ?>" class="view-book" >Xem thông tin bài hát</a>
+               <audio  style="width: 254px;" controls>
+                  <source src="./songs/<?php echo $fetch_products['link_path']  ?>" type="audio/ogg">
+               </audio>
             </div>
          </form>
       <?php
             }
          }else{
-            echo '<p class="empty">Chưa có truyện để cho mượn!</p>';
+            echo '<p class="empty">Chưa có bài hát nào!</p>';
          }
       ?>
    </div>
@@ -142,7 +152,6 @@
 </section>
 
 <section class="home-contact">
-
    <div class="content">
       <h3>Bạn có thắc mắc?</h3>
       <p>Hãy để lại những điều bạn còn thắc mắc, băn khoăn hay muốn chia sẻ thêm về những quyển truyện cho chúng mình tại đây để chúng mình có thể giải đáp giúp bạn</p>

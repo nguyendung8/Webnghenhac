@@ -25,13 +25,12 @@
 
    <div class="header-2">
       <div class="flex">
-         <a href="home.php" class="logo">Comic</a>
+         <a href="home.php" class="logo">Zing MP3</a>
 
          <nav class="navbar">
             <a href="home.php">Trang chủ</a>
             <a href="about.php">Thông tin</a>
             <a href="contact.php">Liên hệ</a>
-            <a href="borrows.php">Đã mượn</a>
          </nav>
 
          <div class="icons">
