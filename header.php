@@ -39,7 +39,7 @@
             <div id="user-btn" class="fas fa-user"></div>
          </div>
 
-         <div class="user-box">
+         <div style="z-index: 1000;" class="user-box">
             <p>Tên người dùng : <span><?php echo $_SESSION['user_name']; ?></span></p>
             <p>Email : <span><?php echo $_SESSION['user_email']; ?></span></p>
             <a href="logout.php" class="delete-btn">Đăng xuất</a>

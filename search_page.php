@@ -57,7 +57,7 @@
                while($fetch_products = mysqli_fetch_assoc($select_products)){
       ?>
                   <div class="box">
-                     <img width="180px" height="207px" src="uploaded_img/<?php echo $fetch_products['image']; ?>" alt="">
+                     <img width="200px" height="207px" src="uploaded_img/<?php echo $fetch_products['image']; ?>" alt="">
                      <div class="name"><?php echo $fetch_products['name']; ?></div>
                      <div class="book-action">
                         <a href="song_detail.php?song_id=<?php echo $fetch_products['id'] ?>" class="view-book" >Xem thông tin bài hát</a>
