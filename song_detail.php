@@ -9,11 +9,11 @@
    if(!isset($user_id)){// session không tồn tại => quay lại trang đăng nhập
       header('location:login.php');
    }
-   $book_id = $_GET['book_id'];
+   $song_id = $_GET['song_id'];
 
-   $sql = "SELECT * FROM books WHERE id = $book_id";
+   $sql = "SELECT * FROM songs WHERE id = $song_id";
    $result = $conn->query($sql);
-   $bookItem = $result->fetch_assoc()
+   $songItem = $result->fetch_assoc();
 
 
 ?>
@@ -44,20 +44,20 @@
          background-color:#fff;
          text-align: center;
       }
-      .bookdetail-title {
+      .songdetail-title {
          font-size: 21px;
          padding-top: 10px;
          color: #9e1ed4;
       }
-      .bookdetail-img {
+      .songdetail-img {
          margin-top: 18px;
          width: 230px;
       }
-      .bookdetail-author {
+      .songdetail-author {
          margin-top: 19px;
          font-size: 20px;
       }
-      .bookdetail-desc {
+      .songdetail-desc {
          margin-top: 20px;
          font-size: 16px;
       }
@@ -67,36 +67,41 @@
    
 <?php include 'header.php'; ?>
 
-<div class="heading">
-   <h3>Xem thông tin sách</h3>
-   <p> <a href="home.php">Trang chủ</a> / Xem thông tin sách </p>
-</div>
 
 <section class="view-book">
-   <?php if ($bookItem) : ?>
+   <?php if ($songItem) : ?>
          <!-- Modal View Detail Book -->
       <div class="modal">
          <div class="modal-container">
-            <h3 class="bookdetail-title">Xem thông tin sách <?php echo($bookItem['name']) ?></h3>
+            <h3 class="songdetail-title">Xem thông tin bài hát <?php echo($songItem['name']) ?></h3>
             <div>
-               <img class="bookdetail-img" src="uploaded_img/<?php echo $bookItem['image']; ?>" alt="">
+               <img class="songdetail-img" src="uploaded_img/<?php echo $songItem['image']; ?>" alt="">
             </div>
-            <p class="bookdetail-author">
-               Tác giả: 
-               <?php echo ($bookItem['author']) ?>
+            <p class="songdetail-author">
+               Sáng tác: 
+               <?php echo ($songItem['author']) ?>
             </p>
-            <p class="bookdetail-author">
-               Số lượng còn: 
-               <?php echo ($bookItem['quantity']) ?> quyển
+            <p class="songdetail-author">
+               Ca sĩ: 
+               <?php echo ($songItem['singer']) ?>
             </p>
-            <p class="bookdetail-desc">
-               Mô tả: 
-               <?php echo($bookItem['describes'])  ?>
+            <?php
+               $cate_id = $songItem['cate_id'];
+               $sqlcate = "SELECT * FROM categories WHERE id = $cate_id";
+               $result1 = $conn1->query($sqlcate);
+               $category = $result1->fetch_assoc();
+            ?>
+            <p class="songdetail-author">
+               Thể loại: 
+               <?php echo ($category['cate_name']) ?>
             </p>
+            <audio  style="width: 350px; margin-top: 10px;" controls>
+                  <source src="./songs/<?php echo $songItem['link_path']  ?>" type="audio/ogg">
+            </audio>
          </div>
       </div>
    <?php else : ?>
-      <p style="font-size: 20px; text-align: center;">Không xem được chi tiết sách này</p>
+      <p style="font-size: 20px; text-align: center;">Không xem được chi tiết bài hát này</p>
    <?php endif; ?>
 
 </section>

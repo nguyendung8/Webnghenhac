@@ -46,9 +46,8 @@
    
 <?php include 'header.php'; ?>
 
-<div class="heading">
-   <h3>Liên hệ</h3>
-   <p> <a href="home.php">Trang chủ</a> / Liên hệ </p>
+<div>
+   <h3 style="font-size: 35px; text-align: center; margin-top: 20px;">Liên hệ</h3>
 </div>
 
 <section class="contact">

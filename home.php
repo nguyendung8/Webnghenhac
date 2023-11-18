@@ -131,16 +131,16 @@
          if(mysqli_num_rows($select_products) > 0){
             while($fetch_products = mysqli_fetch_assoc($select_products)){
       ?>
-         <form action="" method="post" class="box">
+         <div class="box">
             <img width="180px" height="207px" src="uploaded_img/<?php echo $fetch_products['image']; ?>" alt="">
             <div class="name"><?php echo $fetch_products['name']; ?></div>
             <div class="book-action">
-               <a href="song_detail.php?book_id=<?php echo $fetch_products['id'] ?>" class="view-book" >Xem thông tin bài hát</a>
+               <a href="song_detail.php?song_id=<?php echo $fetch_products['id'] ?>" class="view-book" >Xem thông tin bài hát</a>
                <audio  style="width: 254px;" controls>
                   <source src="./songs/<?php echo $fetch_products['link_path']  ?>" type="audio/ogg">
                </audio>
             </div>
-         </form>
+         </div>
       <?php
             }
          }else{

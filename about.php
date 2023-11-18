@@ -26,23 +26,18 @@
    
 <?php include 'header.php'; ?>
 
-<div class="heading">
-   <h3>Về Comic</h3>
-   <p> <a href="home.php">Trang chủ</a> / Thông tin </p>
-</div>
-
 <section class="about">
 
    <div class="flex">
 
       <div class="image">
-         <img src="images/about-img.jpg" alt="">
+         <img height="385px" style="border-radius: 4px;" src="images/infoimg.jpg" alt="">
       </div>
 
       <div class="content">
-         <h3>Tại sao chúng ta nên đọc sách mỗi ngày?</h3>
-         <p>Đọc sách giúp bạn trở nên tốt đẹp hơn.</p>
-         <p> Đọc sách đúng cách giúp kích thích não bộ phát triển tốt hơn, hạn chế lão hóa và giảm khả năng mất trí nhớ. Ngoài ra, đọc sách cũng giúp con người ta nâng cao hiểu biết, làm giàu vốn từ, tăng khả năng tư duy, nhìn nhận vấn đề.</p>
+         <h3>Tại sao chúng ta nên nghe nhạc mỗi ngày?</h3>
+         <p>Nghe nhạc giúp cuộc sống bạn trở nên tốt đẹp hơn.</p>
+         <p> Lợi ích của âm nhạc không chỉ giúp bạn thư giãn mà còn có thể cải thiện chất lượng giấc ngủ, ngăn ngừa chứng trầm cảm, giảm đau, kiểm soát cơn thèm ăn để làm đẹp vóc dáng.</p>
          <a href="contact.php" class="btn">Liên hệ</a>
       </div>
 
@@ -52,12 +47,12 @@
 
 <section class="authors">
 
-   <h1 class="title">Thành viên của Comic</h1>
+   <h1 class="title">Thành viên của Zing MP3</h1>
 
    <div class="box-container">
 
       <div class="box">
-         <img src="images/anhkien.jpg" alt="">
+         <img src="images/conan.jpg" alt="">
          <div class="share">
             <a href="#" class="fab fa-facebook-f"></a>
             <a href="#" class="fab fa-instagram"></a>
