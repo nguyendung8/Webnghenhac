@@ -16,7 +16,7 @@
       $author = mysqli_real_escape_string($conn, $_POST['author']);
       $singer = mysqli_real_escape_string($conn, $_POST['singer']);
       $category = mysqli_real_escape_string($conn, $_POST['category']);
-      $link_path = mysqli_real_escape_string($conn, $_POST['link_path']);
+      $link_path = $_FILES['link_path']['name'];;
       $image = $_FILES['image']['name'];
       $image_size = $_FILES['image']['size'];
       $image_tmp_name = $_FILES['image']['tmp_name'];
@@ -104,7 +104,7 @@
             }
             ?>
       </select>
-      <input type="text" name="link_path" class="box" placeholder="Link bài hát" required>
+      <input type="file" name="link_path" class="box" required placeholder="Chọn link bài hát">
       <input type="file" name="image" accept="image/jpg, image/jpeg, image/png" class="box" required>
       <input type="submit" value="Thêm" name="add_product" class="btn">
    </form>
@@ -125,6 +125,9 @@
                   <div class="name"><?php echo $fetch_products['name']; ?></div>
                   <div class="name">Tác giả: <?php echo $fetch_products['author']; ?></div>
                   <div class="name">Ca sĩ: <?php echo $fetch_products['singer']; ?></div>
+                  <audio  style="width: 254px;" controls>
+                     <source src="./songs/<?php echo $fetch_products['link_path']  ?>" type="audio/ogg">
+                  </audio>
                   <a href="admin_products.php?update=<?php echo $fetch_products['id']; ?>" class="option-btn">Cập nhật</a>
                   <a href="admin_products.php?delete=<?php echo $fetch_products['id']; ?>" class="delete-btn" onclick="return confirm('Xóa bài hát này?');">Xóa</a>
                </div>
