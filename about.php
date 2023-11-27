@@ -52,12 +52,12 @@
    <div class="box-container">
 
       <div class="box">
-         <img src="images/conan.jpg" alt="">
+         <img src="images/anhcanhan.jpg" alt="">
          <div class="share">
-            <a href="#" class="fab fa-facebook-f"></a>
+            <a href="#" class="https://www.facebook.com/profile.php?id=100008755636985"></a>
             <a href="#" class="fab fa-instagram"></a>
          </div>
-         <h3>Nguyễn Tới</h3>
+         <h3>Đỗ Nam Khánh</h3>
       </div>
    </div>
 
