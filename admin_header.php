@@ -15,7 +15,7 @@
 
    <div class="flex">
 
-      <a href="admin_page.php" class="logo">Quản lý</a>
+      <a href="admin_products.php" class="logo">Quản lý</a>
 
       <nav class="navbar">
          <a href="admin_products.php">Bài hát</a>
