@@ -52,12 +52,12 @@
    <div class="box-container">
 
       <div class="box">
-         <img src="images/anhcanhan.jpg" alt="">
+         <img src="images/anh_info.jpg" alt="">
          <div class="share">
-            <a href="#" class="https://www.facebook.com/profile.php?id=100008755636985"></a>
-            <a href="#" class="fab fa-instagram"></a>
+            <a target="_blank" href="https://www.facebook.com/macvinh512" class="fab fa-facebook"></a>
+            <a target="_blank" href="https://www.instagram.com/mac_ncheeese/?fbclid=IwAR2dMf9vunqtvF59HULjtA3s6MeE5uzxJ_2xqT7qNGRZ8Q147qob6YHi8so" class="fab fa-instagram"></a>
          </div>
-         <h3>Đỗ Nam Khánh</h3>
+         <h3>Trần Bắc Vinh Mác</h3>
       </div>
    </div>
 
