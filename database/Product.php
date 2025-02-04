@@ -12,7 +12,7 @@ class Product
     }
 
     // fetch product data using getData Method
-    public function getData($table = 'products', $user_id = null){
+    public function getData($table = 'song', $user_id = null){
         $result = $this->db->con->query("SELECT * FROM {$table} ");
 
         $resultArray = array();
@@ -40,7 +40,7 @@ class Product
     }
 
     // get product using item id
-    public function getProduct($item_id = null, $table= 'products'){
+    public function getProduct($item_id = null, $table= 'song'){
         if (isset($item_id)){
             $result = $this->db->con->query("SELECT * FROM {$table} WHERE item_id={$item_id}");
 

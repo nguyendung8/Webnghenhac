@@ -17,13 +17,10 @@
          <img src="../assets/logo_flower.png" alt="Logo" width="90">
       </div>
       <a style="margin-bottom: 5px;" href="admin_products.php">
-         <i class="menu-icon fa fa-box"></i> Sản phẩm
+         <i class="menu-icon fa fa-box"></i> Bài hát
       </a>
       <a style="margin-bottom: 5px;" href="admin_categories.php">
-         <i class="menu-icon fa fa-list"></i> Danh mục
-      </a>
-      <a style="margin-bottom: 5px;" href="admin_orders.php">
-         <i class="menu-icon fa fa-shopping-cart"></i> Đơn hàng
+         <i class="menu-icon fa fa-list"></i> Thể loại
       </a>
       <a style="margin-bottom: 5px;" href="admin_blogs.php">
          <i class="menu-icon fa fa-newspaper"></i> Blog

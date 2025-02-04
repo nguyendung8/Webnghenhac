@@ -9,7 +9,7 @@ include './database/DBController.php';
 $user_id = $_SESSION['user_id'] ?? 1;
 $cate_id = isset($_GET['cate_id']) ? (int)$_GET['cate_id'] : 0;
 
-$category_query = mysqli_query($conn, "SELECT * FROM `categories` WHERE id = $cate_id") or die('Query failed');
+$category_query = mysqli_query($conn, "SELECT * FROM `category` WHERE id = $cate_id") or die('Query failed');
 if (mysqli_num_rows($category_query) == 0) {
     die('Danh mục không tồn tại!');
 }

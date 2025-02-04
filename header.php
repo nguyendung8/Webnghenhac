@@ -138,7 +138,7 @@ $user_id = @$_SESSION['user_id'] ?? 1;
                         <a class="nav-link" href="./index.php">Trang chủ</a>
                     </li>
                    <?php 
-                        $categories = $product->getData('categories');
+                        $categories = $product->getData('category');
                         ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -151,10 +151,10 @@ $user_id = @$_SESSION['user_id'] ?? 1;
                             </div>
                         </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./blog.php">Blog</a>
+                        <a class="nav-link" href="./blog.php">Yêu thích</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./order.php">Đơn hàng</a>
+                        <a class="nav-link" href="./order.php">Blog</a>
                     </li>
                 </ul>
                 <form method="get" action="./search.php" class="">
@@ -165,13 +165,6 @@ $user_id = @$_SESSION['user_id'] ?? 1;
                             <button class="btn btn-primary search-btn" type="submit">Tìm kiếm</button>
                         </div>
                     </div>
-                </form>
-                <form action="#" class="font-size-14 font-rale">
-                    <a href="cart.php" class="py-2 rounded-pill color-primary-bg">
-                        <span class="font-size-16 px-2 text-white"><i class="fas fa-shopping-cart"></i></span>
-                        <span
-                            class="px-3 py-2 rounded-pill text-dark bg-light"><?php echo count($product->getCartData($user_id ?? 0)); ?></span>
-                    </a>
                 </form>
             </div>
         </nav>
