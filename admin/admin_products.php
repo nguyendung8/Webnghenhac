@@ -9,103 +9,105 @@ if (!isset($admin_id)) {
     exit();
 }
 
-// Thêm sản phẩm mới
-if (isset($_POST['add_product'])) {
-    $item_name = mysqli_real_escape_string($conn, $_POST['item_name']);
-    $item_category = $_POST['item_category'];
-    $select_category = mysqli_query($conn, "SELECT name FROM `categories` WHERE id = '$item_category'") or die('Query failed');
-    $category = mysqli_fetch_assoc($select_category);
-    $item_brand = $category['name'];
-    $item_desc = mysqli_real_escape_string($conn, $_POST['item_desc']);
-    $item_quantity = mysqli_real_escape_string($conn, $_POST['item_quantity']);
-    $item_price = mysqli_real_escape_string($conn, $_POST['item_price']);
+// Thêm bài hát mới
+if (isset($_POST['add_song'])) {
+    $title = mysqli_real_escape_string($conn, $_POST['title']);
+    $artist = mysqli_real_escape_string($conn, $_POST['artist']);
+    $categoryId = $_POST['categoryId'];
+    $isRestricted = isset($_POST['isRestricted']) ? 1 : 0;
 
-    // Upload hình ảnh sản phẩm
-    $item_image_name = $_FILES['item_image']['name'];
-    $item_image_tmp_name = $_FILES['item_image']['tmp_name'];
-    $item_image_folder = '../assets/products/' . $item_image_name;
+    // Upload hình ảnh bài hát
+    $image_name = $_FILES['image']['name'];
+    $image_tmp_name = $_FILES['image']['tmp_name'];
+    $image_folder = '../assets/products/' . $image_name;
 
-    if (move_uploaded_file($item_image_tmp_name, $item_image_folder)) {
-        $insert_product_query = mysqli_query($conn, "INSERT INTO `products` (item_brand, item_category, item_name, item_desc, item_quantity, item_price, item_image) 
-        VALUES ('$item_brand', '$item_category', '$item_name', '$item_desc', '$item_quantity', '$item_price', '$item_image_name')") or die('Query failed');
+    // Upload file bài hát
+    $url_name = $_FILES['url']['name'];
+    $url_tmp_name = $_FILES['url']['tmp_name'];
+    $url_folder = '../assets/songs/' . $url_name;
 
-        if ($insert_product_query) {
-            $message[] = 'Thêm sản phẩm thành công!';
+    if (move_uploaded_file($image_tmp_name, $image_folder) && move_uploaded_file($url_tmp_name, $url_folder)) {
+        $insert_song_query = mysqli_query($conn, "INSERT INTO song (title, artist, categoryId, image, url, isRestricted) 
+        VALUES ('$title', '$artist', '$categoryId', '$image_name', '$url_name', '$isRestricted')") or die('Query failed');
+
+        if ($insert_song_query) {
+            $message[] = 'Thêm bài hát thành công!';
         } else {
-            $message[] = 'Thêm sản phẩm thất bại!';
+            $message[] = 'Thêm bài hát thất bại!';
         }
     } else {
-        $message[] = 'Lỗi khi tải ảnh!';
+        $message[] = 'Lỗi khi tải ảnh hoặc file nhạc!';
     }
 }
 
-// Xóa sản phẩm
+// Xóa bài hát
 if (isset($_GET['delete'])) {
     $delete_id = $_GET['delete'];
-    $delete_image_query = mysqli_query($conn, "SELECT item_image FROM `products` WHERE item_id = '$delete_id'") or die('Query failed');
-    $fetch_image = mysqli_fetch_assoc($delete_image_query);
-    unlink('../assets/products/' . $fetch_image['item_image']);
-    mysqli_query($conn, "SET FOREIGN_KEY_CHECKS = 0") or die('Query failed to disable foreign key checks');
+    $delete_image_query = mysqli_query($conn, "SELECT image, url FROM song WHERE id = '$delete_id'") or die('Query failed');
+    $fetch_files = mysqli_fetch_assoc($delete_image_query);
+    unlink('../assets/products/' . $fetch_files['image']);
+    unlink('../assets/songs/' . $fetch_files['url']);
 
-    $delete_query = mysqli_query($conn, "DELETE FROM `products` WHERE item_id = '$delete_id'") or die('Query failed');
-    mysqli_query($conn, "SET FOREIGN_KEY_CHECKS = 1") or die('Query failed to enable foreign key checks');
+    $delete_query = mysqli_query($conn, "DELETE FROM song WHERE id = '$delete_id'") or die('Query failed');
 
     if ($delete_query) {
-        $message[] = 'Xóa sản phẩm thành công!';
+        $message[] = 'Xóa bài hát thành công!';
     } else {
-        $message[] = 'Xóa sản phẩm thất bại!';
+        $message[] = 'Xóa bài hát thất bại!';
     }
 }
 
-// Cập nhật sản phẩm
-if (isset($_POST['update_product'])) {
+// Cập nhật bài hát
+if (isset($_POST['update_song'])) {
     $update_id = $_POST['update_id'];
-    $item_name = mysqli_real_escape_string($conn, $_POST['item_name']);
-    $item_category = $_POST['item_category'];
-    $select_category = mysqli_query($conn, "SELECT name FROM `categories` WHERE id = '$item_category'") or die('Query failed');
-    $category = mysqli_fetch_assoc($select_category);
-    $item_brand = $category['name'];
-    $item_desc = mysqli_real_escape_string($conn, $_POST['item_desc']);
-    $item_quantity = mysqli_real_escape_string($conn, $_POST['item_quantity']);
-    $item_price = mysqli_real_escape_string($conn, $_POST['item_price']);
+    $title = mysqli_real_escape_string($conn, $_POST['title']);
+    $artist = mysqli_real_escape_string($conn, $_POST['artist']);
+    $categoryId = $_POST['categoryId'];
+    $isRestricted = isset($_POST['isRestricted']) ? 1 : 0;
 
-    $update_query = "UPDATE `products` SET item_name = '$item_name', item_category = '$item_category', item_brand = '$item_brand',
-                    item_desc = '$item_desc', item_quantity = '$item_quantity', item_price = '$item_price'";
+    $update_query = "UPDATE song SET title = '$title', artist = '$artist', categoryId = '$categoryId', isRestricted = '$isRestricted'";
 
-    if (!empty($_FILES['item_image']['name'])) {
-        $item_image_name = $_FILES['item_image']['name'];
-        $item_image_tmp_name = $_FILES['item_image']['tmp_name'];
-        $item_image_folder = '../assets/products/' . $item_image_name;
+    if (!empty($_FILES['image']['name'])) {
+        $image_name = $_FILES['image']['name'];
+        $image_tmp_name = $_FILES['image']['tmp_name'];
+        $image_folder = '../assets/products/' . $image_name;
 
-        move_uploaded_file($item_image_tmp_name, $item_image_folder);
-        $update_query .= ", item_image = '$item_image_name'";
+        move_uploaded_file($image_tmp_name, $image_folder);
+        $update_query .= ", image = '$image_name'";
     }
-    mysqli_query($conn, "SET FOREIGN_KEY_CHECKS = 0") or die('Query failed to disable foreign key checks');
-    $update_query .= " WHERE item_id = '$update_id'";
-    $update_result = mysqli_query($conn, $update_query) or die('Query failed');
-    mysqli_query($conn, "SET FOREIGN_KEY_CHECKS = 1") or die('Query failed to enable foreign key checks');
 
+    if (!empty($_FILES['url']['name'])) {
+        $url_name = $_FILES['url']['name'];
+        $url_tmp_name = $_FILES['url']['tmp_name'];
+        $url_folder = '../assets/songs/' . $url_name;
+
+        move_uploaded_file($url_tmp_name, $url_folder);
+        $update_query .= ", url = '$url_name'";
+    }
+
+    $update_query .= " WHERE id = '$update_id'";
+    $update_result = mysqli_query($conn, $update_query) or die('Query failed');
 
     if ($update_result) {
-        $message[] = 'Cập nhật sản phẩm thành công!';
+        $message[] = 'Cập nhật bài hát thành công!';
     } else {
-        $message[] = 'Cập nhật sản phẩm thất bại!';
+        $message[] = 'Cập nhật bài hát thất bại!';
     }
 }
 
 // Phân trang
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$limit = 6;
-$offset = ($page - 1) * $limit; 
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $limit = 6;
+    $offset = ($page - 1) * $limit; 
 
-$total_products_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM `products`") or die('Query failed');
-$total_products = mysqli_fetch_assoc($total_products_query)['total'];
+    $total_songs_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM song") or die('Query failed');
+    $total_songs = mysqli_fetch_assoc($total_songs_query)['total'];
 
-$select_products = mysqli_query($conn, "SELECT p.*, c.name AS category_name FROM `products` p 
-LEFT JOIN `categories` c ON p.item_category = c.id 
-ORDER BY p.created_at DESC LIMIT $limit OFFSET $offset") or die('Query failed');
+    $select_songs = mysqli_query($conn, "SELECT s.*, c.name AS category_name FROM song s 
+    LEFT JOIN category c ON s.categoryId = c.id 
+    ORDER BY s.id DESC LIMIT $limit OFFSET $offset") or die('Query failed');
 
-$total_pages = ceil($total_products / $limit);
+    $total_pages = ceil($total_songs / $limit);
 ?>
 
 <!DOCTYPE html>
@@ -114,7 +116,7 @@ $total_pages = ceil($total_products / $limit);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý sản phẩm</title>
+    <title>Quản lý bài hát</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -127,8 +129,7 @@ $total_pages = ceil($total_products / $limit);
         <?php include 'admin_navbar.php'; ?>
         <div class="manage-container">
             <?php
-            //nhúng vào các trang bán hàng
-            if (isset($message)) { // hiển thị thông báo sau khi thao tác với biến message được gán giá trị
+            if (isset($message)) {
                 foreach ($message as $msg) {
                     echo '
                     <div class=" alert alert-info alert-dismissible fade show" role="alert">
@@ -139,18 +140,22 @@ $total_pages = ceil($total_products / $limit);
             }
             ?>
             <div class="bg-primary text-white text-center py-2 mb-4 shadow">
-                <h1 class="mb-0">Quản Lý Sản Phẩm</h1>
+                <h1 class="mb-0">Quản Lý Bài Hát</h1>
             </div>
             <section class="add-products mb-4">
                 <form action="" method="post" enctype="multipart/form-data">
-                    <h3>Thêm sản phẩm mới</h3>
+                    <h3>Thêm bài hát mới</h3>
                     <div class="mb-3">
-                        <input type="text" name="item_name" class="form-control" placeholder="Tên sản phẩm" required>
+                        <input type="text" name="title" class="form-control" placeholder="Tên bài hát" required>
                     </div>
                     <div class="mb-3">
-                        <select name="item_category" class="form-control" required>
+                        <input type="text" name="artist" class="form-control" placeholder="Nghệ sĩ" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoryId">Thể loại</label>
+                        <select name="categoryId" class="form-control" required>
                             <?php
-                            $categories = mysqli_query($conn, "SELECT * FROM `categories`") or die('Query failed');
+                            $categories = mysqli_query($conn, "SELECT * FROM category") or die('Query failed');
                             while ($category = mysqli_fetch_assoc($categories)) {
                                 echo "<option value='{$category['id']}'>{$category['name']}</option>";
                             }
@@ -158,90 +163,100 @@ $total_pages = ceil($total_products / $limit);
                         </select>
                     </div>
                     <div class="mb-3">
-                        <textarea name="item_desc" class="form-control" placeholder="Mô tả sản phẩm" rows="5" required></textarea>
+                        <label for="image">Hình ảnh</label>
+                        <input type="file" name="image" class="form-control" accept="image/*" required>
                     </div>
                     <div class="mb-3">
-                        <input type="number" name="item_quantity" class="form-control" placeholder="Số lượng" required>
+                        <label for="url">Link nhạc</label>
+                        <input type="file" name="url" class="form-control" accept="audio/*" required>
                     </div>
-                    <div class="mb-3">
-                        <input type="number" name="item_price" class="form-control" placeholder="Giá sản phẩm" required>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" name="isRestricted" class="form-check-input" id="isRestricted">
+                        <label class="form-check-label" for="isRestricted">Hạn chế</label>
                     </div>
-                    <div class="mb-3">
-                        <input type="file" name="item_image" class="form-control" accept="image/*" required>
-                    </div>
-                    <button type="submit" name="add_product" class="btn btn-primary">Thêm sản phẩm</button>
+                    <button type="submit" name="add_song" class="btn btn-primary">Thêm bài hát</button>
                 </form>
             </section>
 
-            <section class="show-products">
+            <section class="show-songs">
                 <div class="container">
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Hình ảnh</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Danh mục</th>
-                                <th>Số lượng</th>
-                                <th>Giá</th>
+                                <th>Tên bài hát</th>
+                                <th>Nghệ sĩ</th>
+                                <th>Thể loại</th>
+                                <th>Hạn chế</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php
-                            if (mysqli_num_rows($select_products) > 0) {
-                                while ($product = mysqli_fetch_assoc($select_products)) {
+                            if (mysqli_num_rows($select_songs) > 0) {
+                                while ($song = mysqli_fetch_assoc($select_songs)) {
                             ?>
                                     <tr>
-                                        <td><?php echo $product['item_id']; ?></td>
-                                        <td><img src="../assets/products/<?php echo $product['item_image']; ?>" alt="" width="50"></td>
-                                        <td><?php echo $product['item_name']; ?></td>
-                                        <td><?php echo $product['item_brand']; ?></td>
-                                        <td><?php echo $product['item_quantity']; ?></td>
-                                        <td><?php echo number_format($product['item_price'], 0, ',', '.'); ?> đ</td>
+                                        <td><?php echo $song['id']; ?></td>
+                                        <td><img src="../assets/products/<?php echo $song['image']; ?>" alt="" width="100"></td>
+                                        <td><?php echo $song['title']; ?></td>
+                                        <td><?php echo $song['artist']; ?></td>
+                                        <td><?php echo $song['category_name']; ?></td>
+                                        <td><?php echo $song['isRestricted'] ? 'Có' : 'Không'; ?></td>
                                         <td>
                                             <!-- Modal trigger button -->
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal<?php echo $product['item_id']; ?>">Sửa</button>
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal<?php echo $song['id']; ?>">Sửa</button>
                                             <!-- Modal -->
-                                            <div class="modal fade" id="editModal<?php echo $product['item_id']; ?>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="editModal<?php echo $song['id']; ?>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="editModalLabel">Sửa sản phẩm</h5>
+                                                            <h5 class="modal-title" id="editModalLabel">Sửa bài hát</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <form action="" method="post" enctype="multipart/form-data">
                                                             <div class="modal-body">
-                                                                <input type="hidden" name="update_id" value="<?php echo $product['item_id']; ?>">
-                                                                <input type="text" name="item_name" class="form-control mb-3" value="<?php echo $product['item_name']; ?>" required>
-                                                                <select name="item_category" class="form-control mb-3" required>
+                                                                <input type="hidden" name="update_id" value="<?php echo $song['id']; ?>">
+                                                                <input type="text" name="title" class="form-control mb-3" value="<?php echo $song['title']; ?>" required>
+                                                                <input type="text" name="artist" class="form-control mb-3" value="<?php echo $song['artist']; ?>" required>
+                                                                <select name="categoryId" class="form-control mb-3" required>
                                                                     <?php
-                                                                    $categories = mysqli_query($conn, "SELECT * FROM `categories`") or die('Query failed');
+                                                                    $categories = mysqli_query($conn, "SELECT * FROM category") or die('Query failed');
                                                                     while ($category = mysqli_fetch_assoc($categories)) {
-                                                                        echo "<option value='{$category['id']}'" . ($category['id'] == $product['item_category'] ? ' selected' : '') . ">{$category['name']}</option>";
+                                                                        echo "<option value='{$category['id']}'" . ($category['id'] == $song['categoryId'] ? ' selected' : '') . ">{$category['name']}</option>";
                                                                     }
                                                                     ?>
                                                                 </select>
-                                                                <textarea name="item_desc" class="form-control mb-3" rows="5" required><?php echo $product['item_desc']; ?></textarea>
-                                                                <input type="number" name="item_quantity" class="form-control mb-3" value="<?php echo $product['item_quantity']; ?>" required>
-                                                                <input type="number" name="item_price" class="form-control mb-3" value="<?php echo $product['item_price']; ?>" required>
+                                                                <div class="mb-3">
+                                                                    <label for="image">Hình ảnh mới (nếu có)</label>
+                                                                    <input type="file" name="image" class="form-control" accept="image/*">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="url">File nhạc mới (nếu có)</label>
+                                                                    <input type="file" name="url" class="form-control" accept="audio/*">
+                                                                </div>
+                                                                <div class="form-check mb-3">
+                                                                    <input type="checkbox" name="isRestricted" class="form-check-input" id="isRestricted<?php echo $song['id']; ?>" <?php echo $song['isRestricted'] ? 'checked' : ''; ?>>
+                                                                    <label class="form-check-label" for="isRestricted<?php echo $song['id']; ?>">Hạn chế</label>
+                                                                </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                                                <button type="submit" name="update_product" class="btn btn-primary">Cập nhật</button>
+                                                                <button type="submit" name="update_song" class="btn btn-primary">Cập nhật</button>
                                                             </div>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- End Modal -->
-                                            <a href="admin_products.php?delete=<?php echo $product['item_id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">Xóa</a>
+                                            <a href="admin_products.php?delete=<?php echo $song['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa bài hát này?');">Xóa</a>
                                         </td>
                                     </tr>
                             <?php
                                 }
                             } else {
-                                echo '<tr><td colspan="8" class="text-center">Chưa có sản phẩm nào.</td></tr>';
+                                echo '<tr><td colspan="7" class="text-center">Chưa có bài hát nào.</td></tr>';
                             }
                             ?>
                         </tbody>

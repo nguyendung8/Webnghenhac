@@ -39,7 +39,7 @@ TABLE `message` (
 TABLE `song` (
   `id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `artist` int(11) NOT NULL,
+  `artist` varchar(255) NOT NULL,
   `categoryId` int(11) NOT NULL,
   `image` varchar(255) DEFAULT NULL,
   `url` varchar(255) NOT NULL,

@@ -8,7 +8,7 @@ $user_id = @$_SESSION['user_id'] ?? 1;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Niên Flower</title>
+    <title>ZingMP3</title>
 
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -102,7 +102,7 @@ $user_id = @$_SESSION['user_id'] ?? 1;
         }
         ?>
         <div class="strip d-flex justify-content-between px-4 py-1 bg-light">
-            <p class="font-rale font-size-12 text-black-50 m-0">Niên Flower - 0763651041 - Hoà Khương, Hoà Vang - TP Đà
+            <p class="font-rale font-size-12 text-black-50 m-0">Zing MP3 - 0763651041 - Hoà Khương, Hoà Vang - TP Đà
                 Nẵng</p>
             <?php if ($user_id && $user_id != 1) { ?>
                 <div class="user-dropdown" style="position: relative; display: inline-block;">
@@ -117,16 +117,16 @@ $user_id = @$_SESSION['user_id'] ?? 1;
                 </div>
             <?php } else { ?>
                 <div class="font-rale font-size-14">
-                    <a href="#" class="px-3 text-dark">Đăng ký</a>
+                    <a href="./register.php" class="px-3 text-dark">Đăng ký</a>
                     <a href="./login.php" class="px-3 border-right border-left text-dark">Đăng nhập</a>
                 </div>
             <?php } ?>
         </div>
 
         <!-- Primary Navigation -->
-        <nav style=" background: #d83131;" class="navbar navbar-expand-lg navbar-dark color-header-bg">
+        <nav style=" background: #231b2e;" class="navbar navbar-expand-lg navbar-dark color-header-bg">
             <a class="navbar-brand" href="./index.php">
-                <img width="80" src="./assets/logo_flower.png" alt="logo" class="logo">
+                <img width="120" src="./assets/zingmp3_logo.png" alt="logo" class="logo">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -142,7 +142,7 @@ $user_id = @$_SESSION['user_id'] ?? 1;
                         ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Danh mục
+                                Thể loại
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <?php foreach ($categories as $category): ?>
@@ -154,7 +154,7 @@ $user_id = @$_SESSION['user_id'] ?? 1;
                         <a class="nav-link" href="./blog.php">Yêu thích</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./order.php">Blog</a>
+                        <a class="nav-link" href="./order.php">Tin tức</a>
                     </li>
                 </ul>
                 <form method="get" action="./search.php" class="">
