@@ -70,7 +70,7 @@ $user_id = @$_SESSION['user_id'] ?? 1;
             justify-content: space-between;
         }
         .dropdown-item:focus, .dropdown-item:hover {
-            background-color: #007bff;
+            background-color: rgb(142, 70, 205);
             color: white;
         }
         .search-btn {
@@ -151,10 +151,13 @@ $user_id = @$_SESSION['user_id'] ?? 1;
                             </div>
                         </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./blog.php">Yêu thích</a>
+                        <a class="nav-link" href="./favourite.php">Yêu thích</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="./blog.php">Tin tức</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./blog.php">Hồ sơ cá nhân</a>
                     </li>
                 </ul>
                 <form method="get" action="./search.php" class="">

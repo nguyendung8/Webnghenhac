@@ -6,13 +6,13 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-2 col-12">
-                <img width="100" src="./assets/zingmp3_logo.png" alt="logo" class="logo">
+                <img width="140" src="./assets/zingmp3_logo.png" alt="logo" class="logo">
             </div>
             <div class="col-lg-4 col-12">
                 <h4 class="font-rubik font-size-20">About</h4>
                 <div class="d-flex flex-column flex-wrap">
                     <p class="font-size-14 font-rale text-white-50">
-                        ZingMP3 thành lập năm 2024. Chúng tôi là cửa hàng bán hoa uy tín tại Việt Nam , chuyên cung cấp các loại hoa đẹp, chất lượng, giá rẻ nhất thị trường.
+                    "ZingMP3 - Trải nghiệm âm nhạc đỉnh cao! Thưởng thức hàng triệu bài hát chất lượng cao từ các nghệ sĩ hàng đầu. Khám phá, tìm kiếm và tận hưởng âm nhạc mọi lúc, mọi nơi với ZingMP3." 🎵🎶
                     </p>
                 </div>
 
@@ -20,8 +20,8 @@
             <div class="col-lg-3 col-12">
                 <h4 class="font-rubik font-size-20">Feature</h4>
                 <div class="d-flex flex-column flex-wrap">
-                    <a href="#" class="font-rale font-size-14 text-white-50 pb-1">Giỏ hàng</a>
-                    <a href="#" class="font-rale font-size-14 text-white-50 pb-1">Blog</a>
+                    <a href="./favourite.php" class="font-rale font-size-14 text-white-50 pb-1">Yêu thích</a>
+                    <a href="./blog.php" class="font-rale font-size-14 text-white-50 pb-1">Blog</a>
                 </div>
             </div>
             <div class="col-lg-3 col-12">

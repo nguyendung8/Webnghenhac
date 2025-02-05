@@ -46,7 +46,7 @@ include('Template/_blogs.php');
 ?>
 <style>
     #chat-icon:hover {
-        background: #0056b3;
+        background: rgb(142, 70, 205);
     }
 
     #chat-form label {
