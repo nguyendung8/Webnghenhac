@@ -20,13 +20,11 @@
             <?php foreach ($selectProducts as $item) { ?>
             <div class="item py-2 mr-4">
                 <div class="product font-rale">
-                    <a href="<?php printf('%s?item_id=%s', 'product.php',  $item['id']); ?>">
-                        <img style="min-height: 149px;" src="./assets/products/<?php echo $item['image']; ?>" alt="product1" class="img-fluid">
-                    </a>
+                    <img style="min-height: 149px;" src="./assets/products/<?php echo $item['image']; ?>" alt="product1" class="img-fluid">
                     <div class="text-center">
                         <h6 style="height: 39px; margin-top: 10px; font-weight: bold;"><?php echo  $item['title'] ?? "Unknown";  ?></h6>
                         <audio style="width: -webkit-fill-available;" controls>
-                            <source src="./assets/songs/<?php echo $fetch_products['url'] ?>" type="audio/ogg">
+                            <source src="./assets/songs/<?php echo $item ['url'] ?>" type="audio/ogg">
                         </audio>
                     </div>
                 </div>

@@ -154,15 +154,15 @@ $user_id = @$_SESSION['user_id'] ?? 1;
                         <a class="nav-link" href="./blog.php">Yêu thích</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./order.php">Tin tức</a>
+                        <a class="nav-link" href="./blog.php">Tin tức</a>
                     </li>
                 </ul>
                 <form method="get" action="./search.php" class="">
                     <div class="input-group">
                         <?php $keyword = $_GET['keyword'] ?? ''; ?>
-                        <input type="text" name="keyword" class="form-control search-product" placeholder="Search" value="<?php echo $keyword; ?>">
+                        <input type="text" name="keyword" class="form-control search-product" placeholder="Tìm bài hát theo tên, nghệ sĩ,..." value="<?php echo $keyword; ?>">
                         <div class="input-group-append">
-                            <button class="btn btn-primary search-btn" type="submit">Tìm kiếm</button>
+                            <button style="background: rgb(142, 70, 205); border: 0;" class="btn btn-primary search-btn" type="submit">Tìm kiếm</button>
                         </div>
                     </div>
                 </form>

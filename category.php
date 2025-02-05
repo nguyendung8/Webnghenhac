@@ -1,32 +1,25 @@
 <?php
-ob_start();
 session_start();
-
-// include header.php file
 include ('header.php');
 include './database/DBController.php';
 
-$user_id = $_SESSION['user_id'] ?? 1;
-$cate_id = isset($_GET['cate_id']) ? (int)$_GET['cate_id'] : 0;
+// Lấy danh sách danh mục
+$categories_query = mysqli_query($conn, "SELECT * FROM `category`") or die('Query failed');
+$categories = mysqli_fetch_all($categories_query, MYSQLI_ASSOC);
 
-$category_query = mysqli_query($conn, "SELECT * FROM `category` WHERE id = $cate_id") or die('Query failed');
-if (mysqli_num_rows($category_query) == 0) {
-    die('Danh mục không tồn tại!');
-}
-$category = mysqli_fetch_assoc($category_query);
+// Kiểm tra xem có danh mục nào được chọn không
+$selected_category_id = isset($_GET['cate_id']) ? (int) $_GET['cate_id'] : null;
 
-// Lấy sản phẩm theo danh mục
-$product_query = mysqli_query($conn, "SELECT * FROM `products` WHERE item_category = $cate_id") or die('Query failed');
-$products = mysqli_fetch_all($product_query, MYSQLI_ASSOC);
+// Xác định điều kiện truy vấn bài hát
+$user_id = $_SESSION['user_id'] ?? null;
+$song_condition = $user_id ? "" : "AND `isRestricted` = 0";
 
-
-// request method post
-if($_SERVER['REQUEST_METHOD'] == "POST"){
-    if (isset($_POST['category_submit'])){
-        // call method addToCart
-        $Cart->addToCart($_POST['user_id'], $_POST['item_id']);
-        header('Location: ' . $_SERVER['REQUEST_URI']);
-    }
+// Lấy danh sách bài hát thuộc danh mục được chọn
+if ($selected_category_id) {
+    $songs_query = mysqli_query($conn, "SELECT * FROM `song` WHERE `categoryId` = $selected_category_id $song_condition") or die('Query failed');
+    $songs = mysqli_fetch_all($songs_query, MYSQLI_ASSOC);
+} else {
+    $songs = [];
 }
 ?>
 
@@ -35,54 +28,35 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách sản phẩm</title>
-    <!-- Bootstrap CSS -->
+    <title>Danh Mục Bài Hát</title>
 </head>
 <body>
     <div class="container mt-5">
-        <h3 class="font-size-20 text-center mb-4">Danh sách sản phẩm: <?php echo $category['name']; ?></h3>
-        <div class="d-flex flex-wrap mb-4" style="gap: 20px;">
-            <?php foreach ($products as $item) { ?>
-            <div class="grid-item border <?php echo $item['item_brand'] ?? "Brand" ; ?>">
-                <div class="item py-2" style="width: 200px;">
-                    <div class="product font-rale">
-                        <a href="<?php printf('%s?item_id=%s', 'product.php',  $item['item_id']); ?>"><img src="./assets/products/<?php echo $item['item_image'] ?? "./assets/products/13.png"; ?>" alt="product1" class="img-fluid"></a>
-                        <div class="text-center">
-                            <h6 style="height: 39px;"><?php echo $item['item_name'] ?? "Unknown"; ?></h6>
-                            <!-- <div class="rating text-warning font-size-12">
-                                <span><i class="fas fa-star"></i></span>
-                                <span><i class="fas fa-star"></i></span>
-                                <span><i class="fas fa-star"></i></span>
-                                <span><i class="fas fa-star"></i></span>
-                                <span><i class="far fa-star"></i></span>
-                            </div> -->
-                            <div class="price py-2">
-                                <?php echo number_format($item['item_price'], 0, ',', '.'); ?> đ
+
+        <h4 class="mb-3">Bài hát trong danh mục: <strong><?php echo $categories[array_search($selected_category_id, array_column($categories, 'id'))]['name']; ?></strong></h4>
+        <!-- Danh sách bài hát -->
+        <div class="d-flex flex-wrap mb-3" style="gap: 20px;">
+                <br>
+                <?php if (count($songs) > 0): ?>
+                    <?php foreach ($songs as $song): ?>
+                        <div class="border p-3" style="width: 200px;">
+                            <div class="text-center">
+                                <img src="./assets/products/<?php echo $song['image'] ?? 'default.jpg'; ?>" alt="Song Image" class="img-fluid" style="height: 150px;">
+                                <h6 class="mt-2"><?php echo $song['title']; ?></h6>
+                                <p class="text-muted"><?php echo $song['artist']; ?></p>
+                                <audio style="width: 100%;" controls>
+                                    <source src="./assets/songs/<?php echo $song['url']; ?>" type="audio/mp3">
+                                    Your browser does not support the audio element.
+                                </audio>
                             </div>
-                            <form method="post">
-                            <input type="hidden" name="item_id" value="<?php echo $item['item_id'] ?? '1'; ?>">
-                            <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
-                            <?php
-                            if (in_array($item['item_id'], $Cart->getCartId($product->getData('cart')) ?? [])){
-                                echo '<button type="submit" disabled class="btn btn-success font-size-12">Đã có trong giỏ</button>';
-                            }else{
-                                echo '<button type="submit" name="category_submit" class="btn btn-warning font-size-12">Thêm vào giỏ</button>';
-                            }
-                            ?>
-                        </form>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <?php } ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>Không có bài hát nào trong danh mục này.</p>
+                <?php endif; ?>
         </div>
     </div>
 </body>
 </html>
 
-<?php
-// include footer.php file
-include ('footer.php');
-?>
-
-
+<?php include ('footer.php'); ?>

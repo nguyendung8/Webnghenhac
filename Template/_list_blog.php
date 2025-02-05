@@ -2,7 +2,7 @@
 <?php
 // Lấy danh sách blogs
 $blogs = [];
-$result = $conn->query("SELECT * FROM blogs");
+$result = $conn->query("SELECT * FROM advertisement");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
         $blogs[] = $row;
@@ -75,7 +75,7 @@ if ($result) {
                         <img src="./assets/blog/<?php echo $blog['image']; ?>" class="card-img-top" alt="<?php echo $blog['title']; ?>">
                         <div class="card-body">
                             <h5 class="card-title blog-card-title"><?php echo $blog['title']; ?></h5>
-                            <p class="card-text blog-card-description"><?php echo $blog['description']; ?></p>
+                            <p class="card-text blog-card-description"><?php echo $blog['content']; ?></p>
                             <a href="blog_details.php?id=<?php echo $blog['id']; ?>" class="btn btn-read-more">Đọc thêm</a>
                         </div>
                     </div>

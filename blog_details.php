@@ -12,7 +12,7 @@ include './database/DBController.php';
 $blog_id = $_GET['id'] ?? 0; // Lấy ID từ URL
 $blog = null;
 
-$stmt = $conn->prepare("SELECT * FROM blogs WHERE id = ?");
+$stmt = $conn->prepare("SELECT * FROM advertisement WHERE id = ?");
 $stmt->bind_param("i", $blog_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -76,7 +76,7 @@ if ($result->num_rows > 0) {
         <a href="blog.php" class="back-to-list">&larr; Quay lại</a>
         <h1 class="blog-title"><?php echo $blog['title']; ?></h1>
         <img src="./assets/blog/<?php echo $blog['image']; ?>" alt="<?php echo $blog['title']; ?>" class="blog-image">
-        <p class="blog-description"><?php echo $blog['description']; ?></p>
+        <p class="blog-description"><?php echo $blog['content']; ?></p>
     </div>
 </body>
 
