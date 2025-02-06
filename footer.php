@@ -22,6 +22,7 @@
                 <div class="d-flex flex-column flex-wrap">
                     <a href="./favourite.php" class="font-rale font-size-14 text-white-50 pb-1">Yêu thích</a>
                     <a href="./blog.php" class="font-rale font-size-14 text-white-50 pb-1">Blog</a>
+                    <a href="./personal.php" class="font-rale font-size-14 text-white-50 pb-1">Hồ sơ cá nhân</a>
                 </div>
             </div>
             <div class="col-lg-3 col-12">

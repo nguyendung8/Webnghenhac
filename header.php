@@ -1,4 +1,5 @@
 <?php
+ob_start();
 $user_id = @$_SESSION['user_id'] ?? 1;  
 
 ?>
@@ -36,6 +37,9 @@ $user_id = @$_SESSION['user_id'] ?? 1;
     <style>
         .nav-link {
             color: white !important;
+        }
+        .nav-link:hover {
+            color: rgb(142, 70, 205) !important;
         }
 
         .search-product {
@@ -157,7 +161,7 @@ $user_id = @$_SESSION['user_id'] ?? 1;
                         <a class="nav-link" href="./blog.php">Tin tức</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./blog.php">Hồ sơ cá nhân</a>
+                        <a class="nav-link" href="./personal.php">Hồ sơ cá nhân</a>
                     </li>
                 </ul>
                 <form method="get" action="./search.php" class="">

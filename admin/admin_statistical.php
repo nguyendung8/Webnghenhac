@@ -1,6 +1,5 @@
 <?php
 include '../database/DBController.php';
-
 session_start();
 
 $admin_id = $_SESSION['admin_id'];
@@ -10,173 +9,99 @@ if (!isset($admin_id)) {
     exit();
 }
 
-// Thống kê dữ liệu
-$total_orders = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS count FROM `orders`"))['count'];
-$total_products = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS count FROM `products`"))['count'];
-$total_categories = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS count FROM `categories`"))['count'];
+// Thống kê tổng số người dùng
 $total_users = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS count FROM `users` WHERE role='user'"))['count'];
 
-// Doanh thu trong tháng hiện tại
-$current_month = date('Y-m');
-$total_revenue = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(total_price) AS revenue FROM `orders` WHERE status = 3 AND DATE_FORMAT(created_at, '%Y-%m') = '$current_month'"))['revenue'];
+// Tổng số bài hát
+$total_songs = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS count FROM `song`"))['count'];
 
-// Thống kê số lượng đơn hàng theo trạng thái
-$order_status_data = mysqli_query($conn, "SELECT status, COUNT(*) AS count FROM `orders` GROUP BY status");
-$order_status_chart = [];
-while ($row = mysqli_fetch_assoc($order_status_data)) {
-    $order_status_chart[] = ['status' => $row['status'], 'count' => $row['count']];
-}
+// Thống kê bài hát được yêu thích nhất
+$top_songs_query = mysqli_query($conn, "SELECT s.title, COUNT(f.songId) AS likes 
+    FROM `favorite` f 
+    JOIN `song` s ON f.songId = s.id 
+    GROUP BY f.songId 
+    ORDER BY likes DESC 
+    LIMIT 5");
+$top_songs = mysqli_fetch_all($top_songs_query, MYSQLI_ASSOC);
 
-// Thống kê số lượng sản phẩm theo danh mục
-$product_category_data = mysqli_query($conn, "SELECT c.name AS category, COUNT(p.item_id) AS count 
-    FROM `products` p JOIN `categories` c ON p.item_category = c.id GROUP BY c.id");
-$product_category_chart = [];
-while ($row = mysqli_fetch_assoc($product_category_data)) {
-    $product_category_chart[] = ['category' => $row['category'], 'count' => $row['count']];
-}
+// Tổng số đánh giá và đánh giá trung bình
+$total_feedbacks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS count FROM `feedback`"))['count'];
+$average_rating = mysqli_fetch_assoc(mysqli_query($conn, "SELECT AVG(rating) AS avg FROM `feedback`"))['avg'];
+
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thống kê</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="css/admin_style.css">
 </head>
 
 <body>
-    <div class="d-flex">
-        <?php include 'admin_navbar.php'; ?>
-        <div class="manage-container">
-            <div class="bg-primary text-white text-center py-2 mb-4 shadow">
-                <h1 class="mb-0">Trang quản lý thống kê</h1>
-            </div>
-
-            <div class="row mb-4  p-4">
-                <div class="col-md-3">
-                    <div class="card text-center bg-primary text-white">
-                        <div class="card-body">
-                            <h3><?php echo $total_orders; ?></h3>
-                            <p>Đơn hàng</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-center bg-success text-white">
-                        <div class="card-body">
-                            <h3><?php echo $total_products; ?></h3>
-                            <p>Sản phẩm</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-center bg-warning text-white">
-                        <div class="card-body">
-                            <h3><?php echo $total_categories; ?></h3>
-                            <p>Danh mục</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-center bg-danger text-white">
-                        <div class="card-body">
-                            <h3><?php echo $total_users; ?></h3>
-                            <p>Người dùng</p>
-                        </div>
+<div class="d-flex">
+    <?php include 'admin_navbar.php'; ?>
+    <div class="manage-container">
+        <div class="bg-primary text-white text-center py-2 mb-4 shadow">
+            <h1 class="mb-0">Quản Lý Bài Hát</h1>
+        </div>       
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-center bg-primary text-white">
+                    <div class="card-body">
+                        <h3><?= $total_users; ?></h3>
+                        <p>Tổng số người dùng</p>
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Thống kê trạng thái đơn hàng</h5>
-                            <canvas id="orderStatusChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Số lượng sản phẩm theo danh mục</h5>
-                            <canvas id="productCategoryChart"></canvas>
-                        </div>
+            <div class="col-md-4">
+                <div class="card text-center bg-warning text-white">
+                    <div class="card-body">
+                        <h3><?= $total_songs; ?></h3>
+                        <p>Tổng số bài hát</p>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Doanh thu tháng này</h5>
-                    <h3><?php echo number_format($total_revenue ?? 0, 0, ',', '.'); ?> VND</h3>
+        <!-- Top bài hát yêu thích -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title text-center">Top 5 bài hát yêu thích</h5>
+                <ul class="list-group">
+                    <?php foreach ($top_songs as $song) : ?>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <?= $song['title']; ?>
+                            <span class="badge bg-primary rounded-pill"><?= $song['likes']; ?> ❤️</span>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Thống kê đánh giá -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card text-center bg-info text-white">
+                    <div class="card-body">
+                        <h3><?= $total_feedbacks; ?></h3>
+                        <p>Tổng số đánh giá</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-center bg-secondary text-white">
+                    <div class="card-body">
+                        <h3><?= number_format($average_rating ?? 0, 1); ?> ⭐</h3>
+                        <p>Đánh giá trung bình</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        // Biểu đồ trạng thái đơn hàng
-        const orderStatusData = <?php echo json_encode($order_status_chart); ?>;
-        const orderStatusLabels = orderStatusData.map(item => {
-            const status = parseInt(item.status); // Chuyển đổi sang số nguyên
-            switch (status) {
-                case 0:
-                    return 'Chờ xác nhận';
-                case 1:
-                    return 'Đã xác nhận';
-                case 2:
-                    return 'Đang vận chuyển';
-                case 3:
-                    return 'Hoàn thành';
-                case 4:
-                    return 'Đã hủy';
-                default:
-                    return 'Không xác định';
-            }
-        });
-        const orderStatusCounts = orderStatusData.map(item => item.count);
-
-        new Chart(document.getElementById('orderStatusChart'), {
-            type: 'pie',
-            data: {
-                labels: orderStatusLabels,
-                datasets: [{
-                    data: orderStatusCounts,
-                    backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545']
-                }]
-            }
-        });
-
-        // Biểu đồ số lượng sản phẩm theo danh mục
-        const productCategoryData = <?php echo json_encode($product_category_chart); ?>;
-        const productCategoryLabels = productCategoryData.map(item => item.category);
-        const productCategoryCounts = productCategoryData.map(item => item.count);
-
-        new Chart(document.getElementById('productCategoryChart'), {
-            type: 'bar',
-            data: {
-                labels: productCategoryLabels,
-                datasets: [{
-                    label: 'Số lượng sản phẩm',
-                    data: productCategoryCounts,
-                    backgroundColor: '#17a2b8'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
-            }
-        });
-    </script>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
